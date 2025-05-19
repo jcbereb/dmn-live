@@ -1,4 +1,4 @@
-DMN Live 01 – Estados de Aprobación
+DMN Live 01 – Estados de Solicitud
 
 Se requiere determinar un modelo de decisiones que establezca el estado de aprobación, de acuerdo a las siguientes variables de entrada:
 Edad: edad de la persona
