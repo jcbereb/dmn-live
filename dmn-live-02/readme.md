@@ -1,4 +1,4 @@
-Días de Vacaciones
+Días de Vacaciones Empleado
 
 Se requiere determinar un modelo de decisiones que determine el número de días de vacaciones de un empleado; el cálculo está determinado por la siguiente fórmula: vacaciones adicionales + vacaciones base.
 Se tiene una tabla de decisión que determina los días de vacaciones adicionales, con las siguientes reglas:
