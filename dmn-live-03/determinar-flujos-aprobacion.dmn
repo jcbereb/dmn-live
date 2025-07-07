@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:biodi="http://bpmn.io/schema/dmn/biodi/2.0" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="Definitions_00x1qc7" name="DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.36.1" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <decision id="DMNAprobadores" name="Determinar aprobadores">
+    <informationRequirement id="InformationRequirement_0piocmr">
+      <requiredInput href="#InputData_09jcvbo" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1uuppqc">
+      <requiredInput href="#InputData_1x810rd" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1sfw898">
+      <requiredInput href="#InputData_1hujpko" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1lnf7jz" hitPolicy="COLLECT">
+      <input id="Input_1" label="Tipo de Crédito">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>tipoCredito</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0o1lbvm">
+          <text>"nuevo","renovacion"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_1qrqshw" label="Tipo de Producto">
+        <inputExpression id="LiteralExpression_09dka82" typeRef="string">
+          <text>tipoProducto</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_0451brf">
+          <text>"prestamo","financiamiento","fianza"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_0lptlnx" label="Importe">
+        <inputExpression id="LiteralExpression_1gjw4l1" typeRef="number">
+          <text>importe</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Aprobadores" name="aprobadores" typeRef="string">
+        <outputValues id="UnaryTests_1lu6ubr">
+          <text>"gerente-credito","comite-credito","gerente-agencia","gerente-cliente"</text>
+        </outputValues>
+      </output>
+      <rule id="DecisionRule_0oh6tys">
+        <inputEntry id="UnaryTests_0zh1wtb">
+          <text>"nuevo"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0xfzr3q">
+          <text>"prestamo"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1k0dpkf">
+          <text>&gt;1000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1n6g1x0">
+          <text>"gerente-credito"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0li8onp">
+        <inputEntry id="UnaryTests_1ka6jf7">
+          <text>"renovacion"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_07hmza7">
+          <text>"financiamiento"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_03iirqk">
+          <text>&gt;10000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1t5zgw8">
+          <text>"comite-credito"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0e9yx6x">
+        <inputEntry id="UnaryTests_1lsu7la">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1eaie0r">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dxz0kk">
+          <text>[1000..10000]</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10pn4lf">
+          <text>"gerente-agencia"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0zlquvs">
+        <inputEntry id="UnaryTests_0osymo6">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0iqdj9v">
+          <text>"fianza"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r5z0wb">
+          <text>&gt;2000</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yk6g0c">
+          <text>"gerente-cliente"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_09jcvbo" name="tipoCredito" />
+  <inputData id="InputData_1x810rd" name="tipoProducto" />
+  <inputData id="InputData_1hujpko" name="importe" />
+  <decision id="DMNFlujosAprobacion" name="Determinar flujos de aprobación">
+    <informationRequirement id="InformationRequirement_1jd3q8l">
+      <requiredDecision href="#DMNAprobadores" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1jw3eis">
+      <requiredInput href="#InputData_0kuukrx" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_10cw27n">
+      <requiredInput href="#InputData_0z2c5lm" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1unwgxu">
+      <requiredInput href="#InputData_0snw86g" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1er0lzs">
+      <input id="InputClause_05an1nu" label="Aprobadores">
+        <inputExpression id="LiteralExpression_18x33o2" typeRef="Any">
+          <text>aprobadores</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1dry24j" label="Score Final Ajustado">
+        <inputExpression id="LiteralExpression_02zwtfo" typeRef="number">
+          <text>scoreFinalAjustado</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0fmi0lp" label="Nivel de Riesgo">
+        <inputExpression id="LiteralExpression_1xr60od" typeRef="string">
+          <text>nivelRiesgo</text>
+        </inputExpression>
+        <inputValues id="UnaryTests_08fb89z">
+          <text>"bajo","medio","alto"</text>
+        </inputValues>
+      </input>
+      <input id="InputClause_02u34se" label="Requiere Verificación Adicional" biodi:width="260">
+        <inputExpression id="LiteralExpression_0nfmjdb" typeRef="boolean">
+          <text>requiereVerificacionAdicional</text>
+        </inputExpression>
+      </input>
+      <output id="OutputClause_0bwyb14" label="Flujo de Aprobación" name="flujoAprobacion" typeRef="string">
+        <outputValues id="UnaryTests_0h6bx5i">
+          <text>"Aprobacion_Automatica","Enviar_A_Gerente_Credito","Rechazar_Solicitud","Multiples_Aprobaciones_Manuales","Requiere_Investigacion_Adicional"</text>
+        </outputValues>
+      </output>
+      <rule id="DecisionRule_041sjdb">
+        <description>La solicitud cumple criterios y no requiere aprobación manual</description>
+        <inputEntry id="UnaryTests_1202akw">
+          <text>[]</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0ln1qqb">
+          <text>&gt;=750</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0sn43oy">
+          <text>"bajo"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0zv2p3n">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_096lw7u">
+          <text>"Aprobacion_Automatica"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1uxmu79">
+        <description>La solicitud requiere aprobación del gerente de crédito</description>
+        <inputEntry id="UnaryTests_1cnqogd">
+          <text>contains(aprobadores, "gerente-credito")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0r9sj6o">
+          <text>&gt;=600</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0dxr225">
+          <text>"bajo"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0slulqc">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_11idr0h">
+          <text>"Enviar_A_Gerente_Credito"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0vqfobm">
+        <description>Riesgo de seguridad alto o ruta a comité con necesidad de verificación</description>
+        <inputEntry id="UnaryTests_13bw6os">
+          <text>contains(aprobadores, "comite-credito")</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jjfe54">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_04hgsbi">
+          <text>"alto"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0em6oic">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_02lwjt5">
+          <text>"Rechazar_Solicitud"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1z0n1jy">
+        <description>La solicitud requiere múltiples aprobaciones manuales</description>
+        <inputEntry id="UnaryTests_126rjx2">
+          <text>count(aprobadores)&gt;1</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_02n8clm">
+          <text>&gt;=650</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1pp7o42">
+          <text>"medio"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1ufa3xj">
+          <text>false</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1x8j6i6">
+          <text>"Multiples_Aprobaciones_Manuales"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0xyj5a9">
+        <description>Riesgo o score bajo, requiere investigación adicional</description>
+        <inputEntry id="UnaryTests_1tpm5m9">
+          <text>count(aprobadores)&gt;0</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_18g7sy3">
+          <text>&lt;500</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1igrd6y">
+          <text>"medio"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1mwr6py">
+          <text>true</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_14910e9">
+          <text>"Requiere_Investigacion_Adicional"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="InputData_0kuukrx" name="scoreFinalAjustado" />
+  <inputData id="InputData_0z2c5lm" name="nivelRiesgo" />
+  <inputData id="InputData_0snw86g" name="requiereVerificacionAdicional" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="DMNAprobadores">
+        <dc:Bounds height="80" width="180" x="310" y="260" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1kfz3nf" dmnElementRef="InputData_09jcvbo">
+        <dc:Bounds height="45" width="125" x="158" y="408" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1oqcp7h" dmnElementRef="InformationRequirement_0piocmr">
+        <di:waypoint x="221" y="408" />
+        <di:waypoint x="355" y="360" />
+        <di:waypoint x="355" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_0bmngfo" dmnElementRef="InputData_1x810rd">
+        <dc:Bounds height="45" width="125" x="358" y="409" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0kaolmo" dmnElementRef="InformationRequirement_1uuppqc">
+        <di:waypoint x="421" y="409" />
+        <di:waypoint x="400" y="360" />
+        <di:waypoint x="400" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1g58pgi" dmnElementRef="InputData_1hujpko">
+        <dc:Bounds height="45" width="125" x="568" y="408" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_03wvud2" dmnElementRef="InformationRequirement_1sfw898">
+        <di:waypoint x="631" y="408" />
+        <di:waypoint x="445" y="360" />
+        <di:waypoint x="445" y="340" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1s0swff" dmnElementRef="DMNFlujosAprobacion">
+        <dc:Bounds height="80" width="180" x="310" y="70" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0zsp18c" dmnElementRef="InformationRequirement_1jd3q8l">
+        <di:waypoint x="400" y="260" />
+        <di:waypoint x="382" y="170" />
+        <di:waypoint x="382" y="150" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1u68l5k" dmnElementRef="InputData_0kuukrx">
+        <dc:Bounds height="45" width="125" x="128" y="198" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0ko5nw5" dmnElementRef="InformationRequirement_1jw3eis">
+        <di:waypoint x="191" y="198" />
+        <di:waypoint x="346" y="170" />
+        <di:waypoint x="346" y="150" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1fsqbx1" dmnElementRef="InputData_0z2c5lm">
+        <dc:Bounds height="45" width="125" x="538" y="199" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_08p4ct7" dmnElementRef="InformationRequirement_10cw27n">
+        <di:waypoint x="601" y="199" />
+        <di:waypoint x="418" y="170" />
+        <di:waypoint x="418" y="150" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNShape id="DMNShape_1p44p5h" dmnElementRef="InputData_0snw86g">
+        <dc:Bounds height="45" width="125" x="738" y="188" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_1cuie5i" dmnElementRef="InformationRequirement_1unwgxu">
+        <di:waypoint x="801" y="188" />
+        <di:waypoint x="454" y="170" />
+        <di:waypoint x="454" y="150" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
